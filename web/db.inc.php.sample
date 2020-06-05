@@ -1,0 +1,4 @@
+<?php
+$link = new PDO('mysql:host=MyServer;dbname=MyDB;charset=utf8mb4','MyUser','MyPassword');
+$link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+?>

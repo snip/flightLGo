@@ -21,7 +21,8 @@ It can also send this same data to another website (see web directory content fo
 sudo apt-get install libfap6
 wget https://raw.githubusercontent.com/snip/flightLGo/master/sample.env
 ```
-Copy `sample.env` to `.env` in this directory then update this `.env` according to your needs.
+Download binary from https://github.com/snip/flightLGo/releases or build it yourself.
+Copy `sample.env` to `.env` in same directory as flightLGo then update this `.env` according to your needs.
 Then run `./flightLGo`
 
 ## Building

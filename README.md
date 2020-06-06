@@ -17,7 +17,12 @@ It analyze in realtime trafic for a small given location (airfield) and send tak
 It can also send this same data to another website (see web directory content for example of PHP scripts to run this website).
 
 ## Usage
-Copy `sample.env` to `.env` in this directory then update this `.env` according to your needs.
+```
+sudo apt-get install libfap6
+wget https://raw.githubusercontent.com/snip/flightLGo/master/sample.env
+```
+Download binary from https://github.com/snip/flightLGo/releases or build it yourself.
+Copy `sample.env` to `.env` in same directory as flightLGo then update this `.env` according to your needs.
 Then run `./flightLGo`
 
 ## Building
@@ -34,11 +39,3 @@ Normal build using libfap dynamicaly linked:
 go get
 go build
 ```
-
-Static build of libfap
-```
-go get
-go build --ldflags '-extldflags "/lib/x86_64-linux-gnu/libfap.a"'                                                                                                  
-```
-
-Crosscompilation seems not easy due to C lib dependency.

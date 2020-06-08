@@ -42,10 +42,10 @@ if (isset($_GET['airfield'])) {
 		landingAirfield
 		FROM flightlog
 		WHERE ( `takeoffAirfield` = :airfield OR `landingAirfield` = :airfield )
-		 AND (`takeoffTimestamp` > FROM_UNIXTIME(:dateMin)
+		 AND ((`takeoffTimestamp` > FROM_UNIXTIME(:dateMin)
 		 AND `takeoffTimestamp` < FROM_UNIXTIME(:dateMax))
 		 OR (`landingTimestamp` > FROM_UNIXTIME(:dateMin)
-                 AND `landingTimestamp` < FROM_UNIXTIME(:dateMax))
+                 AND `landingTimestamp` < FROM_UNIXTIME(:dateMax)))
 		 ORDER BY `id`');
 	$handle->bindValue(':airfield', $_GET['airfield']);
 	$handle->bindValue(':dateMin', $requestedDate->getTimestamp());

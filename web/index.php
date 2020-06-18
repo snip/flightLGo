@@ -89,7 +89,7 @@ if (isset($_GET['airfield'])) {
 	}
 	echo "</table></center>";
 } else {
-	$handle = $link->prepare('SELECT `takeoffAirfield` as `airfield` FROM `flightlog` UNION SELECT `landingAirfield` FROM `flightlog` ORDER BY `airfield`');
+	$handle = $link->prepare('SELECT `takeoffAirfield` as `airfield` FROM `flightlog` WHERE `takeoffTimestamp` > DATE_SUB(NOW(), INTERVAL 1 WEEK) UNION SELECT `landingAirfield` FROM `flightlog` WHERE `takeoffTimestamp` > DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY `airfield`');
 	$handle->execute();
 	$data = $handle->fetchAll();
 ?>

@@ -87,7 +87,7 @@ if (isset($_GET['airfield'])) {
 			"</td><td>".
 			$row['landingAirfield']."</td></tr>\n";
 	}
-	echo "</table></center>";
+	echo '</table><br>All data are provided by <a href="http://glidernet.org">Open Glider Network (OGN)</a></center>';
 } else {
 	$handle = $link->prepare('SELECT `takeoffAirfield` as `airfield` FROM `flightlog` WHERE `takeoffTimestamp` > DATE_SUB(NOW(), INTERVAL 1 WEEK) UNION SELECT `landingAirfield` FROM `flightlog` WHERE `takeoffTimestamp` > DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY `airfield`');
 	$handle->execute();

@@ -18,10 +18,12 @@ It can also send this same data to another website (see web directory content fo
 
 ## Usage
 Use the installation script to install flightLGo daemon as systemd service:
-...
+
+```
 wget https://raw.githubusercontent.com/snip/flighLGo/master/contrib/InstallFlightLGoasService.sh
 sudo ./installFlightLGoService.sh
-...
+```
+
 During the installation script you have to specify the Latitute, Longitude as well as your airfield's name.
 
 or perform a manual installation:
@@ -39,6 +41,7 @@ Golang installation on Ubuntu/Raspbian:
 https://github.com/golang/go/wiki/Ubuntu
 
 Install flightLGo [libfap](http://www.pakettiradio.net/libfap/) dependency:
+
 ```
 sudo apt-get install libfap-dev libfap6
 ```
@@ -52,7 +55,9 @@ go build
 ## Uninstall
 
 If you have used the installFlightLGoasService.sh script to install the daemon you can use:
-...
+
+```
 sudo ./installFlightLGoasService.sh --uninstall
-...
+```
+
 to remove the daemon as well as all other changes done by the script from your system. Excpetion: libfap5 remains on the system 

@@ -25,20 +25,20 @@ Download binary from https://github.com/snip/flightLGo/releases or build it your
 Copy `sample.env` to `.env` in same directory as flightLGo then update this `.env` according to your needs.
 Then run `./flightLGo`
 
-#Check activity
+## Check activity
 flightlog will output to the terminal it is started in.
 
 ```
 Jul 21 13:42:40 mail flightLGo[22695]: Connected to OGN APRS server to track activity of <ICAO> centered on <LAT> <LOGN> with a radius of <RADIUS> km.
 ```
-This line indicates, that flightLGo has connected to an APRS Server and registered to get motion events within a circle of \<RADIUS> kilometers at the location <LAT> <LONG>. When it receives events it will calcluate whether a takeoff or landing is happening. If so, it will output the event to the terminal which looks like
+This line indicates, that flightLGo has connected to an APRS Server and registered to get motion events within a circle of \<RADIUS> kilometers at the location \<LAT> \<LONG>. When it receives events it will calcluate whether a takeoff or landing is happening. If so, it will output the event to the terminal which looks like
 ```
 Jul 21 14:55:53 mail flightLGo[22695]: 2020-07-21 14:55:46 +0200 CEST> 3EEB98: <D-Callsign> (<CN>) ------------------- Landing
 ```
 This event is also sent to the webserver https://logbook.glidernet.org#<ICAO>, where it is stored in a database.
 
 Only takeoff and landing events which are happening while flightLGo is running can be reported to the website.
-The website will only show your airport, if at lease one takeoff or landing event has been watched and reported to it.
+The website will only show your airport when at lease one takeoff or landing event has been watched and reported to it.
 
 If not registered and started as a systemd service or started via a cron job, flightLGo will terminate when you logoff the computer.
 

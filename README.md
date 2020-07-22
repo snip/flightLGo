@@ -35,12 +35,12 @@ This line indicates, that flightLGo has connected to an APRS Server and register
 ```
 Jul 21 14:55:53 mail flightLGo[22695]: 2020-07-21 14:55:46 +0200 CEST> 3EEB98: <D-Callsign> (<CN>) ------------------- Landing
 ```
-This event is also sent to the [webserver](https://flightlog.glidernet.org/?airfield=YourAirfield), where it is stored in a database.
+This event is also sent to the [https://flightlog.glidernet.org/?airfield=<ICAO>], where it is stored in a database.
 
 Only takeoff and landing events which are happening while flightLGo is running can be reported to the website.
 The website will only show your airport when at lease one takeoff or landing event has been watched and reported to it.
 
-If not registered and started as a systemd service or started via a cron job, flightLGo will terminate when you logoff the computer.
+If not registered and started as a [systemd service](contrib/installFlightLGoasService.md) or started via a cron job, flightLGo will terminate when you logoff from the computer.
 
 ## Building
 Golang installation on Ubuntu/Raspbian:

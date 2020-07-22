@@ -62,4 +62,4 @@ If you have used the installFlightLGoasService.sh script to install the daemon y
 sudo ./installFlightLGoasService.sh --uninstall
 ```
 
-to remove the daemon as well as all other changes done by the script from your system. Excpetion: libfap5 remains on the system 
+to remove the daemon as well as all other changes done by the script from your system. Excpetion: libfap6 remains on the system 

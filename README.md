@@ -20,8 +20,8 @@ It can also send this same data to another website (see web directory content fo
 Use the installation script to install flightLGo daemon as systemd service:
 
 ```
-wget https://raw.githubusercontent.com/snip/flighLGo/master/contrib/InstallFlightLGoasService.sh
-sudo ./installFlightLGoService.sh
+wget https://raw.githubusercontent.com/snip/flightLGo/master/Contrib/installFlightLGoasService.sh
+sudo ./installFlightLGoasService.sh
 ```
 
 The script downloads the latest flightLGo executable and sample.env from https://github/snip/flightLGo, 

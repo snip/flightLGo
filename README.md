@@ -24,9 +24,11 @@ wget https://raw.githubusercontent.com/snip/flighLGo/master/contrib/InstallFligh
 sudo ./installFlightLGoService.sh
 ```
 
-During the installation script you have to specify the Latitute, Longitude as well as your airfield's name.
+The script downloads the latest flightLGo executable and sample.env from https://github/snip/flightLGo, 
+starts an editor to edit flighLGo configuration file (specify the Latitute, Longitude and name of your airfield).
+flightLGo will be configured to run as systemd service and started. 
 
-or perform a manual installation:
+Or perform a manual installation:
 
 ```
 sudo apt-get install libfap6

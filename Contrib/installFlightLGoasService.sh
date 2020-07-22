@@ -40,13 +40,20 @@ function help {
 
 function uninstall {
 	
+	echo "Stopping flightLGo.service"
 	systemctl stop flightLGo.service
+	echo "Removing flightLGo as service"
 	systemctl disable flightLGo.service
+	echo "Removing user flightLGo and his home directory"
 	userdel -r flightLGo
-	rm /lib/systemd/system/flightLGo.service
-	rm /etc/rsyslog.d/20-flightLGo.conf
+	echo "Removing the flighLGo service configuration file"
+	rm -v /lib/systemd/system/flightLGo.service
+	echo "Removing flightLGo syslog configuration file"
+	rm -v /etc/rsyslog.d/20-flightLGo.conf
+	echo "Restarting rsyslog daemon"
 	systemctl restart rsyslog
-	rm -Rf /var/log/flightLGo
+	echo "Removing flighLGo log files"
+	rm -v -Rf /var/log/flightLGo
 	exit 0
 }
 
@@ -61,7 +68,7 @@ then
 	help
 fi
 
-
+# check supported platforms
 platform=`uname -m`
 
 if [[ $platform != "x86_64" ]] && [[ $platform != "armv7l" ]];
@@ -71,6 +78,17 @@ then
 	echo "perhabs we can help you"
 	exit 1
 fi 
+
+# check whether libfap6 exists in the apt repository
+apt-cache pkgnames | grep -q "\<libfap6\>"
+
+if [[ $? != 0 ]];
+then
+	echo "libfap6 could not be found in your repository"
+	echo "\"apt install libfap6\" - will not work"
+	echo "installation failed"
+	exit 1
+fi
 
 # install needed libraries
 apt-get install libfap6
@@ -162,7 +180,7 @@ IMPORTANT: no blanks behind the \"=\" signs, LAT and LONG with decimal-point not
 helpfull hereby: https://www.latlong.net/degrees-minutes-seconds-to-decimal-degrees
 
 If you need to adjust the values after running this script, you edit the file
-     /lib/systemd/system/flightLGo.service
+     /home/flightLGo/flightLGo/.env
 After editing, you need to sync the daemon-cache before restarting the service:
   systemctl daemon-reload
   systemctl stop flightLGo.service
@@ -195,15 +213,9 @@ systemctl start flightLGo.service
 #---------------------------------------------
 # and monitor it:
 sleep 5
-systemctl status flightLGo.service
+systemctl status flightLGo.service < /dev/null
 
 
-#commands to remove the installation from the machine
-#systemctl stop flightLGo.service
-#systemctl disable flightLGo.service
-#userdel -r flightLGo
-#rm /lib/systemd/system/flightLGo.service
-#rm -Rf /var/log/flightLGo
 
 
 

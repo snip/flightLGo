@@ -15,14 +15,14 @@ The script will
 - download the sample.env configuration file
 - invoke an editor to edit the configuration file
 - configure the systemd service flightLGo.service
-- configure rsyslog to output flightLGo.service's output to /home/flightLGo/flightLGo/flightLGo.log
+- configure rsyslog to output flightLGo.service's output to /var/log/flightLGo/flightLGo.log
 - start the systemd flightLGo.service
 
 ## Usage
 
 Open an terminal an execute following commands:
 ```
-wget https://raw.githubusercontent.com/snip/flightLGo/master/Contrib/installFlightLGoasService.sh
+wget https://raw.githubusercontent.com/snip/flightLGo/master/contrib/installFlightLGoasService.sh
 chmod +x ./installFlightLGoasService.sh
 sudo ./installFlightLGoasService.sh
 ```

@@ -1,5 +1,5 @@
 # Install flightLGo as Systemd Service
-Systemd services are automatically started when your system boots, stopped when the system is shut down. Furthermore the service is restarted when it crashed.
+Systemd services are automatically started when your system boots, stopped when the system is shut down. Furthermore the service is monitored and restarted after it crashed.
 
 ## Disclaimer
 
@@ -11,7 +11,7 @@ This is free software, and you are welcome to redistribute it under GPL v3.0 con
 The script will 
 - install additional libraries (libfap6)
 - create a user which account is used to run the service
-- download the executable from https://github.com/snip/flightLGo/Releases
+- download the executable from https://github.com/snip/flightLGo/releases
 - download the sample.env configuration file
 - invoke an editor to edit the configuration file
 - configure the systemd service flightLGo.service
@@ -34,9 +34,9 @@ flightLGo will be configured to run as systemd service and started.
 
 flightLGo's output is written to 
 ```
-sudo cat /var/log/flightLGo/flightLGo.log
+/var/log/flightLGo/flightLGo.log
 ```
-when started as a systemd service. Please refere to https://github.com/snip/flightLGo/blob/master/README.md#check-activity for more details on activity checking.
+when started as a systemd service. Please refere to [Check Activity chapter](../README.md#check-activity) for more details.
 
 ## Uninstall
 

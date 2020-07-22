@@ -1,11 +1,9 @@
-# Script to install flightLGo as Systemd Service
-
-Install flightLGo as a systemd service.
-Systemd services are automatically started when your system boots, stopped when the system is shutdown. Furthermore the service is restarted when crashed.
+# Install flightLGo as Systemd Service
+Systemd services are automatically started when your system boots, stopped when the system is shut down. Furthermore the service is restarted when it crashed.
 
 ## Disclaimer
 
-This program comes with ABSOLUTELY NO WARRANTY.
+Usage of the below script is on your own risk without ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it under GPL v3.0 conditions
 
 ## Concept
@@ -23,25 +21,22 @@ The script will
 ## Usage
 
 Open an terminal an execute following commands:
-
 ```
 wget https://raw.githubusercontent.com/snip/flightLGo/master/Contrib/installFlightLGoasService.sh
 chmod +x ./installFlightLGoasService.sh
 sudo ./installFlightLGoasService.sh
 ```
-
 The script downloads the latest flightLGo executable and sample.env from https://github/snip/flightLGo, 
 starts an editor to edit flighLGo configuration file (specify the Latitute, Longitude and name of your airfield).
 flightLGo will be configured to run as systemd service and started. 
 
 ## Check flightLGo's Activity
 
-run following command in a terminal:
-
+flightLGo's output is written to 
 ```
 sudo cat /var/log/flightLGo/flightLGo.log
 ```
-
+when started as a systemd service. Please refere to https://github.com/snip/flightLGo/blob/master/README.md#check-activity for more details on activity checking.
 
 ## Uninstall
 

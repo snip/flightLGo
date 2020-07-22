@@ -13,7 +13,7 @@ For advanced features you may consider to have a look to https://ktrax.kisstech.
 
 ## Concept
 flightLGo is running on a host as daemon mode (can run on same host as running your OGN receiver).
-It analyze in realtime trafic for a small given location (airfield) and send takeoff and landing infromation to: https://flightlog.glidernet.org
+It analyze in realtime trafic for a small given location (airfield) and send takeoff and landing information to: https://flightlog.glidernet.org
 It can also send this same data to another website (see web directory content for example of PHP scripts to run this website).
 
 ## Usage

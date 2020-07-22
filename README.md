@@ -21,6 +21,7 @@ Use the installation script to install flightLGo daemon as systemd service:
 
 ```
 wget https://raw.githubusercontent.com/snip/flightLGo/master/Contrib/installFlightLGoasService.sh
+chmod +x ./installFlightLGoasService.sh
 sudo ./installFlightLGoasService.sh
 ```
 

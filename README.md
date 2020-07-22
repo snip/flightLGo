@@ -17,20 +17,6 @@ It analyze in realtime trafic for a small given location (airfield) and send tak
 It can also send this same data to another website (see web directory content for example of PHP scripts to run this website).
 
 ## Usage
-Use the installation script to install flightLGo daemon as systemd service:
-
-```
-wget https://raw.githubusercontent.com/snip/flightLGo/master/Contrib/installFlightLGoasService.sh
-chmod +x ./installFlightLGoasService.sh
-sudo ./installFlightLGoasService.sh
-```
-
-The script downloads the latest flightLGo executable and sample.env from https://github/snip/flightLGo, 
-starts an editor to edit flighLGo configuration file (specify the Latitute, Longitude and name of your airfield).
-flightLGo will be configured to run as systemd service and started. 
-
-Or perform a manual installation:
-
 ```
 sudo apt-get install libfap6
 wget https://raw.githubusercontent.com/snip/flightLGo/master/sample.env
@@ -39,12 +25,28 @@ Download binary from https://github.com/snip/flightLGo/releases or build it your
 Copy `sample.env` to `.env` in same directory as flightLGo then update this `.env` according to your needs.
 Then run `./flightLGo`
 
+#Check activity
+flightlog will output to the terminal it is started in.
+
+```
+Jul 21 13:42:40 mail flightLGo[22695]: Connected to OGN APRS server to track activity of <ICAO> centered on <LAT> <LOGN> with a radius of <RADIUS> km.
+```
+This line indicates, that flightLGo has connected to an APRS Server and registered to get motion events within a circle of <RADIUS> kilometers at the location <LAT> <LONG>. When it receives events it will calcluate whether a takeoff or landing is happening. If so, it will output the event to the terminal which looks like
+```
+Jul 21 14:55:53 mail flightLGo[22695]: 2020-07-21 14:55:46 +0200 CEST> 3EEB98: <D-Callsign> (<CN>) ------------------- Landing
+```
+This event is also sent to the webserver https://logbook.glidernet.org#<ICAO>, where it is stored in a database.
+
+Only takeoff and landing events which are happening while flightLGo is running can be reported to the website.
+The website will only show your airport, if at lease one takeoff or landing event has been watched and reported to it.
+
+If not registered and started as a systemd service or started via a cron job, flightLGo will terminate when you logoff the computer.
+
 ## Building
 Golang installation on Ubuntu/Raspbian:
 https://github.com/golang/go/wiki/Ubuntu
 
 Install flightLGo [libfap](http://www.pakettiradio.net/libfap/) dependency:
-
 ```
 sudo apt-get install libfap-dev libfap6
 ```
@@ -54,13 +56,3 @@ Normal build using libfap dynamicaly linked:
 go get
 go build
 ```
-
-## Uninstall
-
-If you have used the installFlightLGoasService.sh script to install the daemon you can use:
-
-```
-sudo ./installFlightLGoasService.sh --uninstall
-```
-
-to remove the daemon as well as all other changes done by the script from your system. Excpetion: libfap6 remains on the system 

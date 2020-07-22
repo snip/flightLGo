@@ -35,7 +35,7 @@ This line indicates, that flightLGo has connected to an APRS Server and register
 ```
 Jul 21 14:55:53 mail flightLGo[22695]: 2020-07-21 14:55:46 +0200 CEST> 3EEB98: <D-Callsign> (<CN>) ------------------- Landing
 ```
-This event is also sent to the [https://flightlog.glidernet.org/?airfield=<ICAO>], where it is stored in a database.
+This event is also sent to the webserver [https://flightlog.glidernet.org](https://flightlog.glidernet.org), where the event is stored in a database to be shown in [https://flightlog.glidernet.org/?airfield=\<ICAO>](https://flightlog.glidernet.org/?airfield=<ICAO>).
 
 Only takeoff and landing events which are happening while flightLGo is running can be reported to the website.
 The website will only show your airport when at lease one takeoff or landing event has been watched and reported to it.

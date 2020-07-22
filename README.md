@@ -31,7 +31,7 @@ flightlog will output to the terminal it is started in.
 ```
 Jul 21 13:42:40 mail flightLGo[22695]: Connected to OGN APRS server to track activity of <ICAO> centered on <LAT> <LOGN> with a radius of <RADIUS> km.
 ```
-This line indicates, that flightLGo has connected to an APRS Server and registered to get motion events within a circle of <RADIUS> kilometers at the location <LAT> <LONG>. When it receives events it will calcluate whether a takeoff or landing is happening. If so, it will output the event to the terminal which looks like
+This line indicates, that flightLGo has connected to an APRS Server and registered to get motion events within a circle of \<RADIUS> kilometers at the location <LAT> <LONG>. When it receives events it will calcluate whether a takeoff or landing is happening. If so, it will output the event to the terminal which looks like
 ```
 Jul 21 14:55:53 mail flightLGo[22695]: 2020-07-21 14:55:46 +0200 CEST> 3EEB98: <D-Callsign> (<CN>) ------------------- Landing
 ```

@@ -13,8 +13,125 @@ include 'db.inc.php';
 //TODO: manage json export
 //TODO: manage type from DDB
 //TODO: manage type from Flarm
-//TODO: manage timezone (query + display)
 //date_default_timezone_set("Zulu");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if (isset($_POST['tf']))
+		$_GET['tf'] = $_POST['tf'];
+	if (isset($_POST['d']))
+		$_GET['d'] = $_POST['d'];
+}
+
+class timeFormatHelper{
+	//TODO correct handling for flights over midnight
+	public int $timestamp = 0;
+
+    function __construct(int $timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }
+    
+    function iDateTime($ts)
+    {
+        $x = new DateTime();
+        $x->setTimestamp($ts);
+        return $x;
+    }
+    
+    public function getRFCTimeString () 
+    {
+        $dt = $this->iDateTime($this->timestamp);
+        return $dt->format('r');
+    }
+
+    public function getRFCTimeStringInUTC () {
+        $dt = $this->iDateTime($this->timestamp);
+        $dt->setTimezone(new DateTimeZone('UTC'));
+        return $dt->format('r');
+    }
+
+    public function getHMSTimeString() {
+        $dt = $this->iDateTime($this->timestamp);
+        return $dt->format('H:i:s');
+    }
+
+    public function getHMSTimeStringInUTC() {
+        $dt = $this->iDateTime($this->timestamp);
+        $dt->setTimezone(new DateTimeZone('UTC'));
+        return $dt->format('H:i:s');
+	}
+	
+    public function getHMTimeString() {
+        $dt = $this->iDateTime($this->timestamp);
+        return $dt->format('H:i');
+    }
+
+    public function getHMTimeStringInUTC() {
+        $dt = $this->iDateTime($this->timestamp);
+        $dt->setTimezone(new DateTimeZone('UTC'));
+        return $dt->format('H:i');
+	}
+	public function getDateTime() {
+		$dt  = new DateTime();
+		$dt->setTimestamp($this->timestamp);
+		return $dt;
+	}
+
+	// calculate duration of the flight round seconds if output format is H:MM
+	public function getDuration(timeFormatHelper $end){
+		$start = $this->iDateTime($this->timestamp);
+		$end = $this->iDateTime($end->timestamp);
+		$duration = $end->diff($start);
+		
+		// check wether to round to Minutes or not
+		if (($_GET['tf'] == 'HM') or ($_GET['tf'] == 'HMUTC')) {
+			if ($duration->s > 29) {
+				if ($duration->i == 59) {
+					$h = $duration->h + 1;
+					$m = 0;
+				} else {
+					$h = $duration->h;
+					$m = $duration->i + 1;
+				}
+			} else {
+				$h = $duration->h;
+				$m = $duration->i;
+			}
+			return sprintf('%d:%02d',$h,$m);
+		} else
+			return $duration->format('%h:%I:%S'); 
+	}
+
+	public function getSetBasedTimeString() {
+		if (isset($_GET['tf'])) {
+			$tfSetting = $_GET['tf'];
+			switch ($tfSetting){
+				case 'RFC':
+					return $this->getRFCTimeString();
+					break;
+				case 'RFCUTC':
+					return $this->getRFCTimeStringInUTC();
+					break;
+				case 'HMS':
+					return $this->getHMSTimeString();
+					break;
+				case 'HMSUTC':
+					return $this->getHMSTimeStringInUTC();
+					break;
+				case 'HM':
+					return $this->getHMTimeString();
+					break;
+				case 'HMUTC':
+					return $this->getHMTimeStringInUTC();
+					break;
+			}
+		}
+		else
+		{
+			return $this->getRFCTimeString();
+		}
+	}
+}
 
 if (isset($_GET['airfield'])) { 
 	if (isset($_GET['d'])) {
@@ -53,45 +170,80 @@ if (isset($_GET['airfield'])) {
 	$handle->execute();
 	$data = $handle->fetchAll();
 	echo '<center><h1>Flightlog for '.htmlspecialchars($_GET['airfield']).'</h1>';
-	echo '<h2>';
-	echo '<a href="?airfield='.$_GET['airfield'].'&d='.$previousDate->format('Y-m-d').'">&lt;</a> ';
-	echo $requestedDate->format('Y-m-d');
-	echo ' <a href="?airfield='.$_GET['airfield'].'&d='.$nextDate->format('Y-m-d').'">&gt;</a>';
-	echo '</h2><br>';
+
+	echo '<form action="" method="POST" id="flightLGoInp" name="flightLGoInp">';
+	echo ' <fieldset>';
+	echo '  <label>Logbook Date:</label>';
+	echo '  <input type="date" value="' . $requestedDate->format('Y-m-d') . '" onchange="document.flightLGoInp.submit()" name="d" id="date"></input>';
+	echo '  <label>Time Format:</label>';
+	echo '  <select onchange="document.flightLGoInp.submit()" name="tf" id="timeformat">';
+	echo '   <option hidden>choose one</option>';
+	echo '   <option value="RFC">RFC 2822</option>';
+	echo '   <option value="RFCUTC">RFC 2822 UTC based</option>';
+	echo '   <option value="HMS">HH:MM:SS</option>';
+	echo '   <option value="HMSUTC">HH:MM:SS UTC based</option>';
+	echo '   <option value="HM">HH:MM</option>';
+	echo '   <option value="HMUTC">HH:MM UTC based</option>';
+	echo '  </select>';
+	echo ' </fieldset>';
+	echo '</form>';
+	// needed to get the default DateTime format preselected in DropDown if 'tf' is not set
+	if (!isset($_GET['tf']))
+		$_GET['tf'] = 'RFC';
+	echo '<script>';
+	echo ' document.getElementById("timeformat").value="' . $_GET['tf'] .'";';
+	echo '</script>';
+
 	echo '<table style="text-align:center;"><tr>'.
-		"<th>ID</th>".
+		//"<th>ID</th>".
 		"<th>Reg</th>".
 		"<th>CN</th>".
 		"<th>Takeoff time</th>".
-		"<th>Takeoff airfield</th>".
 		"<th>Landing time</th>".
+		"<th>Time of Flight</th>".
+		"<th>Takeoff airfield</th>".
 		"<th>Landing airfield</th>".
 		"</tr>";
 	foreach ($data as $row) {
 		if ($row['aircraftTracked'] == "Y" && $row['aircraftIdentified'] == "Y") {
-			echo "<tr><td>".
-				$row['aircraftId']."</td><td>".
+			echo '<tr><td style="text-align:left">'.
 				$row['aircraftReg']."</td><td>".
 				$row['aircraftCN']."</td><td>";
 		} else { // Notrack in DDB or No identified in DDB => hidden
 			echo "<tr><td colspan=\"3\"><font size=\"-1\">(hidden)</font></td><td>";
 		}
-		if ($row['takeoffTimestamp'] > 0)
-			echo date('r',$row['takeoffTimestamp']);
+		if ($row['takeoffTimestamp'] > 0) {
+			$t = new timeFormatHelper($row['takeoffTimestamp']);
+			echo $t->getSetBasedTimeString();
+		}
+		echo "</td><td>";
+		if ($row['landingTimestamp'] > 0){
+			$lt = new timeFormatHelper($row['landingTimestamp']);
+			echo $lt->getSetBasedTimeString();
+		}
+		echo "</td><td>";
+		if (($row['takeoffTimestamp'] > 0) and ($row['landingTimestamp'] > 0))
+		{
+			echo $t->getDuration($lt);
+		}
 		echo 
 			"</td><td>".
-			$row['takeoffAirfield']."</td><td>";
-		if ($row['landingTimestamp'] > 0)
-			echo date('r',$row['landingTimestamp']);
+			$row['takeoffAirfield'];
 		echo 
 			"</td><td>".
 			$row['landingAirfield']."</td></tr>\n";
 	}
-	echo '</table><br>All data are provided by <a href="http://glidernet.org">Open Glider Network (OGN)</a></center>';
+	echo '</table>';
+	if (($_GET['tf'] === 'HM') or ($_GET['tf'] === 'HMUTC')) {
+		echo '<p>The <b>Time of Flight</b> value is rounded to minutes. <b>Takeoff time</b> and <b>Landing time</b> values are not rounded to minutes.<br>Therefore <b>Takeoff time</b> plus <b>Time of Flight</b> will not always correctly sum up to <b>Landing time</b>.</p>';
+	}
+
+	echo '<br>All data are provided by <a href="http://glidernet.org">Open Glider Network (OGN)</a></center>';
 } else {
 	$handle = $link->prepare('SELECT `takeoffAirfield` as `airfield` FROM `flightlog` WHERE `takeoffTimestamp` > DATE_SUB(NOW(), INTERVAL 1 WEEK) UNION SELECT `landingAirfield` FROM `flightlog` WHERE `takeoffTimestamp` > DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY `airfield`');
 	$handle->execute();
 	$data = $handle->fetchAll();
+
 ?>
 <center>
 Please select an airfield:<br>

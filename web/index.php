@@ -161,6 +161,21 @@ if (isset($_GET['airfield'])) {
 	$handle->bindValue(':dateMax', $nextDate->getTimestamp());
 	$handle->execute();
 	$data = $handle->fetchAll();
+	
+	echo '<script>';
+	echo ' function setDateToPreviousDay() {';
+	echo '		document.getElementById("date").value="' . $previousDate->format('Y-m-d') . '";';
+	echo '		document.flightLGoInp.submit();';
+	echo '}';
+	echo '</script>';
+
+	echo '<script>';
+	echo ' function setDateToNextDay() {';
+	echo '		document.getElementById("date").value="' . $nextDate->format('Y-m-d') . '";';
+	echo '		document.flightLGoInp.submit();';
+	echo '}';
+	echo '</script>';
+
 	echo '<center><h1>Flightlog for '.htmlspecialchars($_GET['airfield']).'</h1>';
 
 	echo '<form action="" method="GET" id="flightLGoInp" name="flightLGoInp">';
@@ -168,7 +183,9 @@ if (isset($_GET['airfield'])) {
 	// hidden text field to include the airfield parameter into URL when the form submits
 	echo '  <input type="text" hidden name="airfield" value="' . $_GET['airfield'] . '">';
 	echo '  <label>Logbook Date:</label>';
+	echo '  <button onclick="setDateToPreviousDay()">-1 Day</button>';
 	echo '  <input type="date" value="' . $requestedDate->format('Y-m-d') . '" onchange="document.flightLGoInp.submit()" name="d" id="date"></input>';
+	echo '  <button onclick="setDateToNextDay()">+1 Day</button>';
 	echo '  <label>Time Format:</label>';
 	echo '  <select onchange="document.flightLGoInp.submit()" name="tf" id="timeformat">';
 	echo '   <option hidden>choose one</option>';
@@ -188,7 +205,7 @@ if (isset($_GET['airfield'])) {
 	echo '</form>';
 	// needed to get the default DateTime format preselected in DropDown if 'tf' is not set
 	if (!isset($_GET['tf']))
-		$_GET['tf'] = 'RFC';
+		$_GET['tf'] = 'HMUTC';
 	echo '<script>';
 	echo ' document.getElementById("timeformat").value="' . $_GET['tf'] .'";';
 	echo '</script>';

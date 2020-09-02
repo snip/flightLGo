@@ -178,7 +178,12 @@ if (isset($_GET['airfield'])) {
 	echo '   <option value="HMSUTC">HH:MM:SS UTC based</option>';
 	echo '   <option value="HM">HH:MM</option>';
 	echo '   <option value="HMUTC">HH:MM UTC based</option>';
-	echo '  </select>';
+	echo '  </select><br>';
+	echo '  <input type="checkbox" name="devID" value="1" onchange="document.flightLGoInp.submit() "';
+	if (isset($_GET['devID']))
+		if ($_GET['devID'] === '1')
+			echo  'checked';
+	echo '> Show Device-ID</input>';
 	echo ' </fieldset>';
 	echo '</form>';
 	// needed to get the default DateTime format preselected in DropDown if 'tf' is not set
@@ -188,9 +193,10 @@ if (isset($_GET['airfield'])) {
 	echo ' document.getElementById("timeformat").value="' . $_GET['tf'] .'";';
 	echo '</script>';
 
-	echo '<table style="text-align:center;"><tr>'.
-		//"<th>ID</th>".
-		"<th>Reg</th>".
+	echo '<table style="text-align:center;"><tr>';
+		if (isset($_GET['devID']))
+			echo "<th>ID</th>";
+	echo "<th>Reg</th>".
 		"<th>CN</th>".
 		"<th>Takeoff time</th>".
 		"<th>Landing time</th>".
@@ -200,11 +206,18 @@ if (isset($_GET['airfield'])) {
 		"</tr>";
 	foreach ($data as $row) {
 		if ($row['aircraftTracked'] == "Y" && $row['aircraftIdentified'] == "Y") {
-			echo '<tr><td style="text-align:left">'.
+			if (isset($_GET['devID']))
+				echo '<tr><td style="text-align:left">' . $row['aircraftId'] . '</td>';
+			else
+				echo '<tr>';
+			echo '<td style="text-align:left">'.
 				$row['aircraftReg']."</td><td>".
 				$row['aircraftCN']."</td><td>";
 		} else { // Notrack in DDB or No identified in DDB => hidden
-			echo "<tr><td colspan=\"3\"><font size=\"-1\">(hidden)</font></td><td>";
+			if (isset($_GET['devID']))
+				echo '<tr><td colspan="3"><font size="-1">(hidden)</font></td><td>';
+			else
+				echo '<tr><td colspan="2"><font size="-1">(hidden)</font></td><td>';
 		}
 		if ($row['takeoffTimestamp'] > 0) {
 			$t = new timeFormatHelper($row['takeoffTimestamp']);

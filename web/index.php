@@ -13,18 +13,10 @@ include 'db.inc.php';
 //TODO: manage json export
 //TODO: manage type from DDB
 //TODO: manage type from Flarm
-//date_default_timezone_set("Zulu");
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	if (isset($_POST['tf']))
-		$_GET['tf'] = $_POST['tf'];
-	if (isset($_POST['d']))
-		$_GET['d'] = $_POST['d'];
-}
 
 class timeFormatHelper{
 	//TODO correct handling for flights over midnight
-	public int $timestamp = 0;
+	public $timestamp = 0;
 
     function __construct(int $timestamp)
     {
@@ -171,8 +163,10 @@ if (isset($_GET['airfield'])) {
 	$data = $handle->fetchAll();
 	echo '<center><h1>Flightlog for '.htmlspecialchars($_GET['airfield']).'</h1>';
 
-	echo '<form action="" method="POST" id="flightLGoInp" name="flightLGoInp">';
+	echo '<form action="" method="GET" id="flightLGoInp" name="flightLGoInp">';
 	echo ' <fieldset>';
+	// hidden text field to include the airfield parameter into URL when the form submits
+	echo '  <input type="text" hidden name="airfield" value="' . $_GET['airfield'] . '">';
 	echo '  <label>Logbook Date:</label>';
 	echo '  <input type="date" value="' . $requestedDate->format('Y-m-d') . '" onchange="document.flightLGoInp.submit()" name="d" id="date"></input>';
 	echo '  <label>Time Format:</label>';

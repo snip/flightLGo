@@ -143,7 +143,7 @@ User=flightLGo
 Group=flightLGo
 LimitNOFILE=1024
 
-Restart=on-failure
+Restart=always
 RestartSec=10
 startLimitIntervalSec=60
 

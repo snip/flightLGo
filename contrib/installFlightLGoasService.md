@@ -22,7 +22,7 @@ The script will
 
 Open an terminal an execute following commands:
 ```
-wget https://raw.githubusercontent.com/snip/flightLGo/master/Contrib/installFlightLGoasService.sh
+wget https://raw.githubusercontent.com/snip/flightLGo/master/contrib/installFlightLGoasService.sh
 chmod +x ./installFlightLGoasService.sh
 sudo ./installFlightLGoasService.sh
 ```

@@ -136,6 +136,7 @@ echo "
 Description=FlightLGo Data Collector
 ConditionPathExists=$flightLGoDirPath/flightLGo
 After=network.target
+StartLimitIntervalSec=60
  
 [Service]
 Type=simple
@@ -143,9 +144,8 @@ User=flightLGo
 Group=flightLGo
 LimitNOFILE=1024
 
-Restart=on-failure
+Restart=always
 RestartSec=10
-startLimitIntervalSec=60
 
 WorkingDirectory=$flightLGoDirPath
 ExecStart=$flightLGoDirPath/flightLGo
